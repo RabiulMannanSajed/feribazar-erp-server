@@ -2,6 +2,8 @@ import { RawProduct } from "./rawProduct.model.js";
 
 export const createRawProductIntoDB = async (data) => {
   // Logic to save raw product data into the database
+  //   run some checking here
+  console.log(data);
   const rawProduct = await RawProduct(data);
   return await rawProduct.save();
 };
