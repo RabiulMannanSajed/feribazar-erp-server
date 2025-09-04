@@ -26,7 +26,7 @@ const RawProductSchema = new Schema(
 
     weightUnit: {
       type: String,
-      enum: ["kg", "mon", "ton"],
+      enum: ["kg", "mon", "ton", "piece"],
       required: true,
     },
 
@@ -65,4 +65,23 @@ RawProductSchema.pre("save", function (next) {
   next();
 });
 
+// 🔹 Pre-update hook (when updating existing)
+RawProductSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate();
+
+  // Fetch the existing document
+  const docToUpdate = await this.model.findOne(this.getQuery());
+
+  if (!docToUpdate) return next();
+
+  // Merge old + new values
+  const updatedData = { ...docToUpdate.toObject(), ...update };
+
+  // Recalculate
+  update.rawProductPricePerKg = calculateRawProductPricePerKg(updatedData);
+
+  this.setUpdate(update);
+
+  next();
+});
 export const RawProduct = model("RawProduct", RawProductSchema);
