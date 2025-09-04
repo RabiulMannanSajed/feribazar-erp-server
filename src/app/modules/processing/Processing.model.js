@@ -1,7 +1,7 @@
 // here we will take the value of raw product and calculate the price per kg
 import { model, Schema } from "mongoose";
 
-const ProcessingSchema = new Schema({
+const ProcessingProductSchema = new Schema({
   rawProduct: {
     // reference to raw product
     type: Schema.Types.ObjectId,
@@ -41,10 +41,42 @@ const ProcessingSchema = new Schema({
     default: [],
   },
 
+  batchNumber: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
   processingCost: {
     type: Number,
     required: true,
   },
 });
 
-export const Processing = model("Processing", ProcessingSchema);
+// 🔹 Pre-save middleware to set rawProductPricePerKg
+ProcessingProductSchema.pre("save", function (next) {
+  this.rawProductPricePerKg = calculateRawProductPricePerKg(this);
+  next();
+});
+
+// 🔹 Pre-update hook (when updating existing)
+ProcessingProductSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate();
+
+  // Fetch the existing document
+  const docToUpdate = await this.model.findOne(this.getQuery());
+
+  if (!docToUpdate) return next();
+
+  // Merge old + new values
+  const updatedData = { ...docToUpdate.toObject(), ...update };
+
+  // Recalculate
+  update.rawProductPricePerKg = calculateRawProductPricePerKg(updatedData);
+
+  this.setUpdate(update);
+
+  next();
+});
+
+export const Processing = model("Processing", ProcessingProductSchema);
