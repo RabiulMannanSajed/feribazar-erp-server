@@ -1,6 +1,8 @@
 import { model, Schema } from "mongoose";
 import { calculateRawProductPricePerKg } from "../../../../util/calculateRawProductPricePerKg.js";
 
+// TODO batch number gen auto base on the item type add date if this on the same day then add 1 more to the last one
+
 const RawProductSchema = new Schema(
   {
     itemName: {

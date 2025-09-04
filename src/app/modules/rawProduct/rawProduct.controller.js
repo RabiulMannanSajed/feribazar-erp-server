@@ -14,3 +14,5 @@ export const createRawProduct = async (req, res) => {
     });
   }
 };
+
+//  here for the update if user can update any thing of the entry product
