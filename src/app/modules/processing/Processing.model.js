@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { calculateRawProductPricePerKg } from "../../../../util/calculateRawProductPricePerKg.js";
+import { calculateProcessProductPricePerKg } from "../../../../util/calculateProcessProductPricePerKg.js";
 
 const ProcessingProductSchema = new Schema({
   rawProduct: {
@@ -46,6 +46,16 @@ const ProcessingProductSchema = new Schema({
     type: Number,
   },
 
+  cookingIngredientsCost: {
+    type: [Number],
+    default: [],
+  },
+
+  fuelCost: {
+    type: [Number],
+    default: [],
+  },
+
   workerCost: {
     type: [Number],
     default: [],
@@ -76,7 +86,7 @@ const ProcessingProductSchema = new Schema({
 // 🔹 Pre-save middleware to set rawProductPricePerKg
 ProcessingProductSchema.pre("save", function (next) {
   console.log("this here", this);
-  this.ProcessingProductPricePerKg = calculateRawProductPricePerKg(this);
+  this.ProcessingProductPricePerKg = calculateProcessProductPricePerKg(this);
 
   next();
 });
@@ -95,7 +105,7 @@ ProcessingProductSchema.pre("findOneAndUpdate", async function (next) {
 
   // Recalculate
   update.ProcessingProductPricePerKg =
-    calculateRawProductPricePerKg(updatedData);
+    calculateProcessProductPricePerKg(updatedData);
 
   this.setUpdate(update);
 
