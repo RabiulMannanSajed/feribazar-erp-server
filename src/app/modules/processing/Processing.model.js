@@ -1,5 +1,5 @@
-// here we will take the value of raw product and calculate the price per kg
 import { model, Schema } from "mongoose";
+import { calculateRawProductPricePerKg } from "../../../../util/calculateRawProductPricePerKg.js";
 
 const ProcessingProductSchema = new Schema({
   rawProduct: {
@@ -8,19 +8,30 @@ const ProcessingProductSchema = new Schema({
     ref: "RawProduct",
     required: true,
   },
+
   processedItemName: {
     type: String,
     required: true,
     trim: true,
   },
 
-  //*  here user give the product
-  processedItemWeight: {
+  itemType: {
+    type: String,
+    enum: ["packing", "goods"],
+  },
+
+  itemCost: {
     type: Number,
     required: true,
   },
 
-  processedItemWeightUnit: {
+  //*  here user give the product
+  itemWeight: {
+    type: Number,
+    required: true,
+  },
+
+  weightUnit: {
     type: String,
     enum: ["kg", "mon", "ton", "piece"],
     required: true,
@@ -29,6 +40,10 @@ const ProcessingProductSchema = new Schema({
   transportationCost: {
     type: [Number],
     default: [],
+  },
+
+  itemAmount: {
+    type: Number,
   },
 
   workerCost: {
@@ -47,15 +62,22 @@ const ProcessingProductSchema = new Schema({
     trim: true,
   },
 
-  processingCost: {
+  //* this one come form the Mixing product and other part
+  afterUseRawItemWeight: {
     type: Number,
-    required: true,
+    default: null,
+  },
+  ProcessingProductPricePerKg: {
+    type: Number,
+    default: null, // will be calculated automatically
   },
 });
 
 // 🔹 Pre-save middleware to set rawProductPricePerKg
 ProcessingProductSchema.pre("save", function (next) {
-  this.rawProductPricePerKg = calculateRawProductPricePerKg(this);
+  console.log("this here", this);
+  this.ProcessingProductPricePerKg = calculateRawProductPricePerKg(this);
+
   next();
 });
 
@@ -72,7 +94,8 @@ ProcessingProductSchema.pre("findOneAndUpdate", async function (next) {
   const updatedData = { ...docToUpdate.toObject(), ...update };
 
   // Recalculate
-  update.rawProductPricePerKg = calculateRawProductPricePerKg(updatedData);
+  update.ProcessingProductPricePerKg =
+    calculateRawProductPricePerKg(updatedData);
 
   this.setUpdate(update);
 

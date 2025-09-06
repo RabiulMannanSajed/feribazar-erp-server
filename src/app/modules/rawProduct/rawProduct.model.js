@@ -15,12 +15,18 @@ const RawProductSchema = new Schema(
       type: String,
       enum: ["packing", "goods"],
     },
+
+    itemCost: {
+      type: Number,
+    },
+
     // * If goods
     itemWeight: {
       type: Number,
     },
+
     // * If packing
-    itemAmount: {
+    itemNumber: {
       type: Number,
     },
 
@@ -51,6 +57,12 @@ const RawProductSchema = new Schema(
       trim: true,
     },
 
+    //* this one come form the processing product and other part
+    afterUseRawItemWeight: {
+      type: Number,
+      default: null,
+    },
+
     rawProductPricePerKg: {
       type: Number,
       default: null, // will be calculated automatically
@@ -61,6 +73,7 @@ const RawProductSchema = new Schema(
 
 // 🔹 Pre-save middleware to set rawProductPricePerKg
 RawProductSchema.pre("save", function (next) {
+  console.log(this);
   this.rawProductPricePerKg = calculateRawProductPricePerKg(this);
   next();
 });
@@ -84,4 +97,5 @@ RawProductSchema.pre("findOneAndUpdate", async function (next) {
 
   next();
 });
+
 export const RawProduct = model("RawProduct", RawProductSchema);
