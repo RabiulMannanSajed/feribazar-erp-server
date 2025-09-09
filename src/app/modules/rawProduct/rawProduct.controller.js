@@ -3,6 +3,16 @@ import {
   updateRawProductInDB,
 } from "./rawProduct.service.js";
 
+// Get all
+export const GetAllRawProduct = async (req, res) => {
+  try {
+    const processing = await getAllProcessingService();
+    res.status(200).json({ success: true, data: processing });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export const createRawProduct = async (req, res) => {
   try {
     const product = await createRawProductIntoDB(req.body);

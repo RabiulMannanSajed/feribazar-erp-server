@@ -77,6 +77,7 @@ const ProcessingProductSchema = new Schema({
     type: Number,
     default: null,
   },
+
   ProcessingProductPricePerKg: {
     type: Number,
     default: null, // will be calculated automatically
