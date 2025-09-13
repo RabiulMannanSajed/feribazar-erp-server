@@ -88,7 +88,6 @@ const ProcessingProductSchema = new Schema({
 ProcessingProductSchema.pre("save", function (next) {
   console.log("this here", this);
   this.ProcessingProductPricePerKg = calculateProcessProductPricePerKg(this);
-
   next();
 });
 

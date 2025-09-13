@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { model, Schema } from "mongoose";
 import { calculateMixingProductPricePerGm } from "../../../../util/calculateMixingProductPricePerGm.js";
 
 const MixingUnitSchema = new Schema(
@@ -7,10 +7,12 @@ const MixingUnitSchema = new Schema(
       type: [Number],
       default: [],
     },
+
     otherCost: {
       type: [Number],
       default: [],
     },
+
     transportationCost: {
       type: [Number],
       default: [],
@@ -20,7 +22,11 @@ const MixingUnitSchema = new Schema(
       {
         idOfTheAddedProduct: {
           type: Schema.Types.ObjectId,
-          ref: "ProcessingProduct",
+          required: true,
+        },
+        productModel: {
+          type: String,
+          enum: ["RawProduct", "Processing"], // 🔥 which collection it belongs to
           required: true,
         },
         AddedProductName: {
@@ -45,12 +51,14 @@ const MixingUnitSchema = new Schema(
 
     mixingProductPricePerGm: {
       type: Number,
+      default: null,
     },
   },
   { timestamps: true }
 );
 
-mixingProductPricePerGm.pre("save", function (next) {
+// ✅ Pre-save hook should be on the Schema, not the field
+MixingUnitSchema.pre("save", function (next) {
   this.mixingProductPricePerGm = calculateMixingProductPricePerGm(this);
   next();
 });
