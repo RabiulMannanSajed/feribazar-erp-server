@@ -3,12 +3,15 @@ export const convertToKg = (value, unit) => {
   switch (unit) {
     case "kg":
       return value;
+    case "gm":
+      return value / 1000; // ✅ 1000 grams = 1 kg
     case "mon": // 1 mon = 40 kg (BD standard)
       return value * 40;
     case "ton": // 1 ton = 1000 kg
       return value * 1000;
     case "piece":
-      // ⚠️ adjust this rule as needed (default 1 piece = 1 kg)
+      // ⚠️ depends on your domain, but normally piece ≠ kg.
+      // For now keep as 1 piece = 1 kg (adjust if needed)
       return value * 1;
     default:
       throw new Error(`Unknown unit: ${unit}`);
@@ -20,9 +23,11 @@ export const updateRawProductWeight = async (
   processing,
   session
 ) => {
-  console.log(rawProduct.itemWeight, rawProduct.weightUnit);
+  console.log("Raw product:", rawProduct.itemWeight, rawProduct.weightUnit);
+  console.log("Processing:", processing.itemWeight, processing.weightUnit);
+
   const processedKg = convertToKg(processing.itemWeight, processing.weightUnit);
-  const rawKg = await convertToKg(rawProduct.itemWeight, rawProduct.weightUnit);
+  const rawKg = convertToKg(rawProduct.itemWeight, rawProduct.weightUnit);
 
   const remaining = rawKg - processedKg;
 

@@ -19,7 +19,7 @@ export function calculateMixingProductPricePerGm(raw) {
     };
   });
 
-  // 3️⃣ Total weight (in grams)
+  // 3️⃣ Total weight (in kg + gm)
   const totalWeightInKg = productAdded.reduce(
     (acc, item) => acc + item.weightInKg,
     0
@@ -37,5 +37,12 @@ export function calculateMixingProductPricePerGm(raw) {
     totalProductPrice + totalTransportation + totalWorker + totalOther;
 
   // 6️⃣ Price per gram
-  return totalWeightInGm > 0 ? grandTotal / totalWeightInGm : 0;
+  const pricePerGram = totalWeightInGm > 0 ? grandTotal / totalWeightInGm : 0;
+
+  // 7️⃣ Return full data
+  return {
+    pricePerGram,
+    produceMixingProduct: totalWeightInKg, // default in kg
+    MixingProductWeightUnit: "kg",
+  };
 }

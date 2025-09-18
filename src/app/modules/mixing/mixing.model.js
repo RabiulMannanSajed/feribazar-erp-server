@@ -49,17 +49,32 @@ const MixingUnitSchema = new Schema(
       },
     ],
 
+    produceMixingProduct: {
+      type: Number,
+    },
+    MixingProductWeightUnit: {
+      type: String,
+      enum: ["kg", "mon", "ton", "gm"],
+    },
+
     mixingProductPricePerGm: {
       type: Number,
       default: null,
     },
   },
+
   { timestamps: true }
 );
 
 // ✅ Pre-save hook should be on the Schema, not the field
 MixingUnitSchema.pre("save", function (next) {
-  this.mixingProductPricePerGm = calculateMixingProductPricePerGm(this);
+  const { pricePerGram, produceMixingProduct, MixingProductWeightUnit } =
+    calculateMixingProductPricePerGm(this);
+
+  this.mixingProductPricePerGm = pricePerGram;
+  this.produceMixingProduct = produceMixingProduct;
+  this.MixingProductWeightUnit = MixingProductWeightUnit;
+
   next();
 });
 
