@@ -43,6 +43,6 @@ export function calculateMixingProductPricePerGm(raw) {
   return {
     pricePerGram,
     produceMixingProduct: totalWeightInKg, // default in kg
-    MixingProductWeightUnit: "kg",
+    MixingProductWeightUnit: "Kg",
   };
 }

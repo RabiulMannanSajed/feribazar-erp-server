@@ -30,6 +30,10 @@ const UserSchema = new Schema({
       "sales_representative",
     ],
   },
+  isDelete: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export const User = model("User", UserSchema);

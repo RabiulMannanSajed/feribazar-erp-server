@@ -1,3 +1,5 @@
+import { LoginUser } from "./auth.service.js";
+
 export const createLoginUser = async (req, res, next) => {
   try {
     const { token, user } = await LoginUser(req.body);

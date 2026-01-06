@@ -27,7 +27,7 @@ export const updateMixing = async (req, res) => {
 };
 
 // ✅ Get all
-export const getAllMixings = async (req, res) => {
+export const getAllMixingProducts = async (req, res) => {
   try {
     const result = await getAllMixingsFromDB();
     res.status(200).json({ success: true, data: result });

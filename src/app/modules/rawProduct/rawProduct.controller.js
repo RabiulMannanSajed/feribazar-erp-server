@@ -1,12 +1,13 @@
 import {
   createRawProductIntoDB,
+  GetAllRawProductFromDB,
   updateRawProductInDB,
 } from "./rawProduct.service.js";
 
 // Get all
 export const GetAllRawProduct = async (req, res) => {
   try {
-    const processing = await getAllProcessingService();
+    const processing = await GetAllRawProductFromDB();
     res.status(200).json({ success: true, data: processing });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -14,6 +15,7 @@ export const GetAllRawProduct = async (req, res) => {
 };
 
 export const createRawProduct = async (req, res) => {
+  console.log(req.body);
   try {
     const product = await createRawProductIntoDB(req.body);
     res.status(201).json({

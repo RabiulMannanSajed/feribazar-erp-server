@@ -1,7 +1,8 @@
+import config from "../config/index.js";
 import { User } from "../users/users.model.js";
 import jwt from "jsonwebtoken";
 
-export const LoginUser = async ({ email, password }) => {
+export const LoginUser = async ({ email, role }) => {
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error("User not found");

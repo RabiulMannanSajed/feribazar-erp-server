@@ -28,7 +28,7 @@ const PackingSchema = new Schema(
       },
       productModel: {
         type: String,
-        enum: ["MixingProduct", "Processing"],
+        enum: ["MixingProduct", "Processing", "RawProduct"],
         required: true,
       },
       productName: { type: String, required: true },

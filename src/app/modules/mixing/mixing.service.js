@@ -2,29 +2,6 @@ import mongoose from "mongoose";
 import { MixingProduct } from "./mixing.model.js";
 import { updateProductsForMixing } from "../../../../util/updateProductsForMixing.js";
 
-// // ✅ Create Mixing
-// export const createMixingIntoDB = async (data) => {
-//   const session = await mongoose.startSession();
-//   session.startTransaction();
-
-//   try {
-//     const mixingDoc = new MixingProduct(data);
-//     await mixingDoc.save({ session });
-
-//     // Update stock from raw/processing products
-//     await updateProductsForMixing(mixingDoc, session);
-
-//     await session.commitTransaction();
-//     session.endSession();
-
-//     return mixingDoc;
-//   } catch (err) {
-//     await session.abortTransaction();
-//     session.endSession();
-//     throw err;
-//   }
-// };
-
 export const createMixingIntoDB = async (data) => {
   const session = await mongoose.startSession();
   session.startTransaction();

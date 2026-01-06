@@ -86,7 +86,7 @@ const ProcessingProductSchema = new Schema({
 
 // 🔹 Pre-save middleware to set rawProductPricePerKg
 ProcessingProductSchema.pre("save", function (next) {
-  console.log("this here", this);
+  console.log("this here process food ", this);
   this.ProcessingProductPricePerKg = calculateProcessProductPricePerKg(this);
   next();
 });

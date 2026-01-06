@@ -8,6 +8,9 @@ export const createRawProductIntoDB = async (data) => {
   return await rawProduct.save();
 };
 
+export const GetAllRawProductFromDB = async () => {
+  return await RawProduct.find({});
+};
 // Update a raw product by ID (auto recalculates price)
 export const updateRawProductInDB = async (id, data) => {
   return await RawProduct.findOneAndUpdate({ _id: id }, data, {

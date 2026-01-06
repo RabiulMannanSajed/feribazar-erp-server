@@ -1,11 +1,16 @@
 export function calculatePackingCost(raw) {
+  console.log("cost of raw product ", raw);
+
+  // TODO check the retun value
   // 1️⃣ Extra costs
-  const totalTransportation = raw.transportationCost.reduce((a, b) => a + b, 0);
-  const totalWorker = raw.workerCost.reduce((a, b) => a + b, 0);
-  const totalOther = raw.otherCost.reduce((a, b) => a + b, 0);
+  const sumNumbers = (arr) => arr.reduce((a, b) => Number(a) + Number(b), 0);
+
+  const totalTransportation = sumNumbers(raw.transportationCost);
+  const totalWorker = sumNumbers(raw.workerCost);
+  const totalOther = sumNumbers(raw.otherCost);
 
   const extraCost = totalTransportation + totalWorker + totalOther;
-
+  console.log("extraCost", extraCost);
   // 2️⃣ Per bottle packing cost
   const perBottlePackingCost =
     raw.packingMaterial.usedQuantity > 0

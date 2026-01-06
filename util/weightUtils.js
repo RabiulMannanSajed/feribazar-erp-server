@@ -1,5 +1,6 @@
 export const convertToKg = (value, unit) => {
   console.log("   value, unit", value, unit);
+  unit = unit?.toLowerCase();
   switch (unit) {
     case "kg":
       return value;
@@ -23,13 +24,18 @@ export const updateRawProductWeight = async (
   processing,
   session
 ) => {
+  console.log("this is the raw Product values ", rawProduct);
   console.log("Raw product:", rawProduct.itemWeight, rawProduct.weightUnit);
   console.log("Processing:", processing.itemWeight, processing.weightUnit);
 
   const processedKg = convertToKg(processing.itemWeight, processing.weightUnit);
-  const rawKg = convertToKg(rawProduct.itemWeight, rawProduct.weightUnit);
+  const baseRawKg =
+    rawProduct.afterUseRawItemWeight === null
+      ? convertToKg(rawProduct.itemWeight, rawProduct.weightUnit) // first use
+      : rawProduct.afterUseRawItemWeight; // subsequent uses (already KG)
 
-  const remaining = rawKg - processedKg;
+  // ✅ Calculate remaining
+  const remaining = baseRawKg - processedKg;
 
   if (remaining < 0) {
     throw new Error("❌ Not enough raw product weight available");

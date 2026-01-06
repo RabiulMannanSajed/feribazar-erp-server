@@ -1,7 +1,13 @@
 import { Router } from "express";
-import { createRawProduct, updateRawProduct } from "./rawProduct.controller.js";
+import {
+  createRawProduct,
+  GetAllRawProduct,
+  updateRawProduct,
+} from "./rawProduct.controller.js";
 
 const route = Router();
+
+route.get("/get-all-raw-product", GetAllRawProduct);
 
 route.post("/create-raw-product", createRawProduct);
 
