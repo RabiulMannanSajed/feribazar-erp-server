@@ -11,7 +11,7 @@ export const convertToKg = (value, unit) => {
     case "ton": // 1 ton = 1000 kg
       return value * 1000;
     case "piece":
-      // ⚠️ depends on your domain, but normally piece ≠ kg.
+      // depends on your domain, but normally piece ≠ kg.
       // For now keep as 1 piece = 1 kg (adjust if needed)
       return value * 1;
     default:
