@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { MixingProduct } from "./mixing.model.js";
 import { updateProductsForMixing } from "../../../../util/updateProductsForMixing.js";
 
+// this is for the create the Mixing
 export const createMixingIntoDB = async (data) => {
   const session = await mongoose.startSession();
   session.startTransaction();

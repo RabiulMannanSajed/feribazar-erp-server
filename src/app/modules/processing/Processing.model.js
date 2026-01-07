@@ -38,6 +38,7 @@ const ProcessingProductSchema = new Schema(
       type: Number,
       required: true,
     },
+
     // this value come form the productWFromRaw - itemWeight
     wastageProductWeight: {
       type: Number,

@@ -31,6 +31,7 @@ const MixingUnitSchema = new Schema(
           enum: ["RawProduct", "Processing"],
           required: true,
         },
+
         AddedProductName: {
           type: String,
           required: true,
