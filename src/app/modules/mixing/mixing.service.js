@@ -55,16 +55,7 @@ export const updateMixingIntoDB = async (id, data) => {
 
 // ✅ Get all Mixing
 export const getAllMixingsFromDB = async () => {
-  return await MixingProduct.find().populate(
-    "productAdded.idOfTheAddedProduct"
-  );
-};
-
-// ✅ Get one Mixing
-export const getMixingByIdFromDB = async (id) => {
-  return await MixingProduct.findById(id).populate(
-    "productAdded.idOfTheAddedProduct"
-  );
+  return await MixingProduct.find().populate("productAdded.productModel");
 };
 
 // ✅ Delete Mixing
